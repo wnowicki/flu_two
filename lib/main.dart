@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -61,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = GeneratorPage();
         break;
       case 1:
-        page = Placeholder();
+        page = FavoritesPage();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -107,6 +109,32 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class FavoritesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+
+    return Center(
+      child: FavList(list: appState.favorites),
+    ); // Center
+  }
+}
+
+class FavList extends StatelessWidget {
+  const FavList({super.key, required this.list});
+
+  final List<WordPair> list;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: [
+        Text("Favourites"),
+        for (var word in list) Text(word.asLowerCase),
+      ],
+    );
+  }
+}
 
 class GeneratorPage extends StatelessWidget {
   @override
